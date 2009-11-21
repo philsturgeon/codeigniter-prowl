@@ -18,11 +18,15 @@ Usage
 
 	$config['username'] = 'KanyeWest';
 	$config['password'] ='douch3b4g1977';
-	$config['application'] => 'Kayne\'s Calender'; // optional. Defaults to CI Prowl
 	
-	echo $this->load->library('prowl', $config);
+	// optional. Defaults to CI Prowl
+	$config['application'] = "Kayne's Calender";
 	
-	echo $this->prowl->send('Reminder', 'Be an idiot in public.');
+	$this->load->library('prowl', $config);
+	
+	$result = $this->prowl->send('Reminder', 'Be an idiot in public.');
+	
+	print_r($result);
 
 Simple as that! 
 
