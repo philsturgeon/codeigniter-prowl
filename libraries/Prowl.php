@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') or exit('shove off');
 
 class Prowl
 {
