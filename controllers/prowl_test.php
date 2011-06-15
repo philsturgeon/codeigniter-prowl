@@ -4,11 +4,11 @@ class Prowl_test extends Controller
 {
  	function index()
  	{
-		$config['username'] = 'KanyeWest';
-		$config['password'] ='douch3b4g1977';
+		// Required.
+		$config['apikey'] = 'yourgeneratedapikey';
 		
-		// optional. Defaults to CI Prowl
-		$config['application'] = "Kayne's Calender";
+		// Optional. Defaults to CI Prowl.
+		$config['application'] = "Kanye's Calender";
 		
 		$this->load->library('prowl', $config);
 		

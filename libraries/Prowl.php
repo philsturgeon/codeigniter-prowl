@@ -1,10 +1,11 @@
-<?php defined('BASEPATH') or exit('shove off');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Prowl
 {
-	var $username = '';
-	var $password = '';
-	var $application = 'CI Prowl';
+	private $apikey = '';
+	private $application = 'CI Prowl';
+	
+	private $url = 'https://api.prowlapp.com/publicapi/';
 
 	/**
 	 * Constructor - Sets Preferences
@@ -24,11 +25,10 @@ class Prowl
 	/**
 	 * Initialize preferences
 	 *
-	 * @access	public
 	 * @param	array
 	 * @return	void
 	 */
-	function initialize($config = array())
+	public function initialize($config = array())
 	{
 		foreach ($config as $key => $val)
 		{
@@ -39,54 +39,36 @@ class Prowl
 		}
 	}
    
-
-	function send($event, $description)
+	/**
+	 * Send a push notification. Returns the XML response from the server as a string.
+	 *
+	 * @param 	$event string
+	 * @param 	$description string
+     * @param 	$priority integer
+	 * @return	string
+	 */
+	public function send($event, $description, $priority = 0)
 	{
-		$url = "https://prowl.weks.net/api/add_notification.php?application=". urlencode($this->application)  ."&event=". urlencode($event) ."&description=". urlencode($description);
+		$url = $this->url . 'add';
+		$fields = array(
+		    'apikey' => $this->apikey,
+		    'priority' => $priority,
+		    'application' => $this->application,
+		    'event' => $event,
+		    'description' => $description
+		);
 	
 		$ch = curl_init($url);
-				
-		curl_setopt($ch, CURLOPT_USERPWD, $this->username .":". $this->password);
-		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		
 		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	
 		$return = curl_exec($ch);
-		
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		
 		curl_close($ch);
 		
-		// Invalid username/password
-		if($httpcode == 401)
-		{
-			return array(
-				"success" => FALSE,
-				"error" => "Invalid username/password",
-				"error_code" => 401
-			);
-		}
-		
-		// No application/event defined
-		elseif($httpcode == 400)
-		{
-			return array(
-				"success" => FALSE,
-				"error" => "No application/event defined",
-				"error_code" => 400
-			);
-		}
-		
-		// All ok!
-		return array(
-			"success" => TRUE,
-			"error" => "",
-			"error_code" => ""
-		);
+        return $return;
 	}
 
 };
