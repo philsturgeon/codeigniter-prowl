@@ -32,7 +32,7 @@ Usage
 Credits
 -------
 
-Based on **Leon Bayliss** PHP Prowl
+Based on **Leon Bayliss**' PHP Prowl
 
 Original CodeIgniter class by **Phil Sturgeon**
 
