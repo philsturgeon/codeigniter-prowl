@@ -33,5 +33,7 @@ Credits
 -------
 
 Based on **Leon Bayliss** PHP Prowl
+
 Original CodeIgniter class by **Phil Sturgeon**
+
 Updated to latest API version by **Erik Brännström**
